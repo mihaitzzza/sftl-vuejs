@@ -13,6 +13,7 @@
             v-bind:editItem="editItem"
             v-bind:moveItemUp="moveItemUp"
             v-bind:moveItemDown="moveItemDown"
+            v-bind:checkItem="checkListItem"
         />
       </div>
       <div v-if="isEditable" class="footer">
@@ -43,7 +44,8 @@ export default {
     'editItem',
     'moveItemUp',
     'moveItemDown',
-    'onNameChange'
+    'onNameChange',
+    'checkListItem',
   ],
   methods: {
     onInputChange: function (event) {

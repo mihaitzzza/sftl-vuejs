@@ -36,6 +36,7 @@ export default createStore({
       state.shoppingList.items.push({
         ...item,
         id: new Date().getTime(),
+        checked: false,
       })
     },
     updateShoppingListItem: (state, { index, item }) => {
@@ -83,6 +84,16 @@ export default createStore({
         ...state.lists.slice(index + 1),
       ];
       window.localStorage.setItem('lists', JSON.stringify(state.lists));
+
+      if (list.id === state.favouriteList.id) {
+        if (state.lists.length > 0) {
+          state.favouriteList = state.lists[0];
+          window.localStorage.setItem('favourite_list', JSON.stringify(state.favouriteList));
+        } else {
+          state.favouriteList = null;
+          window.localStorage.removeItem('favourite_list');
+        }
+      }
     },
     setShoppingList: (state, { list }) => {
       state.shoppingList = { ...list };
@@ -106,6 +117,23 @@ export default createStore({
     markListAsFavourite: (state, { list }) => {
       state.favouriteList = list;
       window.localStorage.setItem('favourite_list', JSON.stringify(list));
+    },
+    checkListItem: (state, { listId, item }) => {
+      const list = state.lists.find(list => list.id === listId);
+
+      if (list) {
+        const itemToUpdate = list.items.find(i => i.id === item.id);
+        itemToUpdate && (itemToUpdate.checked = !itemToUpdate.checked);
+
+        if (list.id === state.favouriteList.id) {
+          state.favouriteList = list;
+          window.localStorage.setItem('favourite_list', JSON.stringify(list));
+        }
+
+        window.localStorage.setItem('lists', JSON.stringify(state.lists));
+      }
+
+      console.log('state', state.favouriteList.items[0].checked);
     },
   },
   actions: {

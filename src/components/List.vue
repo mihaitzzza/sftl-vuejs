@@ -4,7 +4,10 @@
       <h3>Please create a list by adding a new item.</h3>
     </div>
     <ul>
-      <li v-for="item in items" :key="item.id" class="item-container">
+      <li v-for="item in items" :key="item.id" class="item-container" v-bind:class="{ checked: item.checked }">
+        <div v-if="!isEditable" class="item-checkbox">
+          <input type="checkbox" v-bind:checked="item.checked" @change="checkItem(item)" />
+        </div>
         <div v-if="isEditable && itemToEdit.id === item.id" class="item-name">
           <input type="text" v-model="itemToEdit.name" placeholder="Item Name"  />
         </div>
@@ -76,7 +79,7 @@
 <script>
 export default {
   name: 'List',
-  props: ['items', 'isEditable', 'editItem', 'removeItem', 'moveItemUp', 'moveItemDown'],
+  props: ['items', 'isEditable', 'editItem', 'removeItem', 'moveItemUp', 'moveItemDown', 'checkItem'],
   data: () => ({
     itemToEdit: {},
   }),
@@ -110,6 +113,9 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+.editable-list-container ul .item-container.checked {
+  text-decoration: line-through;
 }
 .editable-list-container ul .item-container .item-name {
   flex: 1;

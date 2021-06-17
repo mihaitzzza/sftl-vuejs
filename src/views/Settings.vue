@@ -25,12 +25,13 @@
       v-if="modals.showView"
       v-bind:isEditable="false"
       v-bind:list="selectedList"
+      v-bind:checkListItem="checkListItem"
       v-bind:onCancel="onModalCancel"
   />
   <div class="about">
     <h2 class="header">Available lists</h2>
     <p v-if="lists.length === 0">
-      You don't have any available lists.
+      You don't have any available lists. Please create a New List <router-link to="/new-list">here</router-link>.
     </p>
     <ul class="lists">
       <li v-for="(list, index) in lists" :key="list.id" class="list-info">
@@ -118,6 +119,13 @@ export default {
         type: 'updateShoppingListName',
         name,
       })
+    },
+    checkListItem: function(item) {
+      this.$store.commit({
+        type: 'checkListItem',
+        item,
+        listId: this.selectedList.id,
+      });
     },
     getConfirmationModalContent: function() {
       const { showRemove } = this.modals;
