@@ -21,7 +21,6 @@ export default {
   },
   computed: mapState({
     favouriteList: state => {
-      console.log(state.favouriteList);
       return state.favouriteList;
     },
   }),
